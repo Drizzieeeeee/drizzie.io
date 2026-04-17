@@ -2,30 +2,44 @@
 
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <title>Drizzie</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drizzie</title>
 
-```
-<!-- 字体 -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron&family=Bebas+Neue&family=Pacifico&display=swap');
 
-body {
+* {
     margin: 0;
-    background: linear-gradient(135deg, #1f3b44, #000);
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(circle at center, #1f3b44, #000);
     color: white;
     font-family: sans-serif;
     cursor: none;
     overflow-x: hidden;
 }
 
-.hero {
-    padding: 120px 60px;
+/* ===== 粒子背景 ===== */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
 
-/* ===== 滚动名字 ===== */
+/* ===== 主内容 ===== */
+.hero {
+    position: relative;
+    z-index: 2;
+    padding: 100px 5vw;
+}
+
+/* ===== 滚动标题 ===== */
 .name-marquee {
-    width: 100%;
     overflow: hidden;
     white-space: nowrap;
     margin-bottom: 40px;
@@ -33,25 +47,24 @@ body {
 
 .track {
     display: inline-flex;
-    gap: 80px;
-    animation: scroll 12s linear infinite;
+    gap: 60px;
+    animation: scroll 14s linear infinite;
 }
 
 .track span {
-    font-size: 100px;
+    font-size: 90px;
     line-height: 1;
-    transition: 0.3s;
-    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .track span:hover {
-    transform: scale(1.3) rotate(-8deg);
+    transform: scale(1.3) rotate(-6deg);
 }
 
 /* 字体风格 */
 .n1 { font-family: 'Monoton'; color: #ff3b3b; }
 .n2 { font-family: 'Pacifico'; color: #00ffd5; }
-.n3 { font-family: 'Bebas Neue'; color: #ffd700; letter-spacing: 6px; }
+.n3 { font-family: 'Bebas Neue'; color: #ffd700; letter-spacing: 4px; }
 .n4 { font-family: 'Orbitron'; color: #00f0ff; text-shadow: 0 0 20px #00f0ff; }
 .n5 {
     background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, purple);
@@ -66,19 +79,20 @@ body {
 }
 
 /* ===== 文案 ===== */
-p {
-    font-size: 20px;
+.desc {
+    margin-top: 20px;
+    font-size: 18px;
     opacity: 0.8;
 }
 
 /* ===== 按钮 ===== */
 .btn {
-    margin-top: 30px;
+    margin-top: 25px;
+    display: inline-block;
+    padding: 12px 28px;
     background: white;
     color: black;
-    padding: 12px 26px;
-    border-radius: 30px;
-    display: inline-block;
+    border-radius: 25px;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -87,37 +101,68 @@ p {
     transform: scale(1.1);
 }
 
-/* ===== 高级鼠标 ===== */
+/* ===== 鼠标效果 ===== */
 .cursor {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border: 2px solid #00ffd5;
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px #00ffd5;
+    box-shadow: 0 0 15px #00ffd5;
     z-index: 999;
 }
 
-/* 鼠标拖尾点 */
 .trail {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     background: #00ffd5;
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
     opacity: 0.6;
-    z-index: 998;
 }
 
+/* ===== 音乐播放器 ===== */
+.music {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+/* ===== 照片墙 ===== */
+.gallery {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.08);
+}
+
+/* ===== 手机优化 ===== */
+@media (max-width: 768px) {
+    .track span {
+        font-size: 48px;
+    }
+}
 </style>
-```
 
 </head>
 
 <body>
+
+<canvas id="bg"></canvas>
 
 <div class="hero">
 
@@ -136,9 +181,17 @@ p {
     </div>
 </div>
 
-<p>记录生活 / 情绪 / 音乐</p>
+<div class="desc">记录生活 / 情绪 / 音乐</div>
 
 <div class="btn">进入我的世界</div>
+
+<!-- 照片墙 -->
+<div class="gallery">
+    <img src="https://picsum.photos/300/200?1">
+    <img src="https://picsum.photos/300/200?2">
+    <img src="https://picsum.photos/300/200?3">
+    <img src="https://picsum.photos/300/200?4">
+</div>
 ```
 
 </div>
@@ -147,35 +200,81 @@ p {
 
 <div class="cursor"></div>
 
+<!-- 音乐 -->
+
+<div class="music">
+    <audio controls loop autoplay>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+    </audio>
+</div>
+
 <script>
-// ===== 鼠标光标 =====
+// ===== 鼠标 =====
 const cursor = document.querySelector(".cursor");
 
 document.addEventListener("mousemove", e => {
     cursor.style.left = e.clientX + "px";
     cursor.style.top = e.clientY + "px";
 
-    // 拖尾效果
     const trail = document.createElement("div");
     trail.className = "trail";
     trail.style.left = e.clientX + "px";
     trail.style.top = e.clientY + "px";
     document.body.appendChild(trail);
 
-    setTimeout(() => {
-        trail.remove();
-    }, 300);
+    setTimeout(() => trail.remove(), 250);
 });
 
-// ===== 点击爆炸效果 =====
+// ===== 点击动画 =====
 document.querySelectorAll(".track span").forEach(el => {
-    el.addEventListener("click", () => {
-        el.style.transform = "scale(2) rotate(360deg)";
-        setTimeout(() => {
-            el.style.transform = "";
-        }, 400);
-    });
+    el.onclick = () => {
+        el.style.transform = "scale(1.8) rotate(360deg)";
+        setTimeout(()=> el.style.transform="", 400);
+    };
 });
+
+// ===== 粒子背景 =====
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.onresize = resize;
+
+let particles = [];
+
+for (let i = 0; i < 60; i++) {
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        vx: Math.random()*1.5 - 0.75,
+        vy: Math.random()*1.5 - 0.75
+    });
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x<0||p.x>canvas.width) p.vx*=-1;
+        if (p.y<0||p.y>canvas.height) p.vy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,2,0,Math.PI*2);
+        ctx.fillStyle="rgba(255,255,255,0.7)";
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
 </script>
 
 </body>

@@ -15,46 +15,53 @@ body{
     background:#081c24;
     color:white;
     font-family:sans-serif;
-    cursor:none;
+    overflow-x:hidden;
 }
 
-/* ===== 粒子 ===== */
-canvas{
+/* ===== 背景文字系统 ===== */
+.bg{
     position:fixed;
     top:0;
     left:0;
-    z-index:0;
-}
-
-/* ===== 背景滚动字体（不重叠）===== */
-.bg-scroll{
-    position:fixed;
     width:100%;
-    top:20%;
-    z-index:1;
+    height:100%;
+    z-index:0;
     overflow:hidden;
-    opacity:0.15;
 }
 
-.bg-track{
+/* 每一行 */
+.row{
     display:flex;
-    gap:100px;
     white-space:nowrap;
-    animation:move 20s linear infinite;
+    position:absolute;
+    width:200%;
+    opacity:0.25;
+    animation:move linear infinite;
 }
 
-.bg-track span{
-    font-size:120px;
-    font-family:'Orbitron';
-    color:#00ffd5;
+/* 每一行不同速度 */
+.row:nth-child(odd){ animation-duration:18s; }
+.row:nth-child(even){ animation-duration:25s; }
+
+/* 文字样式 */
+.row span{
+    margin-right:80px;
+    font-weight:bold;
 }
 
+/* 字体 */
+.f1{font-family:'Monoton'; color:#ff3b3b;}
+.f2{font-family:'Pacifico'; color:#00ffd5;}
+.f3{font-family:'Bebas Neue'; color:#ffd700;}
+.f4{font-family:'Orbitron'; color:#00f0ff;}
+
+/* 动画 */
 @keyframes move{
-    from{transform:translateX(100%);}
-    to{transform:translateX(-100%);}
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
 }
 
-/* ===== 页面结构 ===== */
+/* ===== 页面 ===== */
 .section{
     min-height:100vh;
     padding:100px 8vw;
@@ -62,40 +69,37 @@ canvas{
     z-index:2;
 }
 
-/* ===== 标题 ===== */
 .title{
     font-size:80px;
     font-family:'Monoton';
-    margin-bottom:20px;
 }
 
 .sub{
+    margin-top:10px;
     opacity:0.8;
 }
 
-/* ===== 滚动动画 ===== */
-.fade{
-    opacity:0;
-    transform:translateY(50px);
-    transition:0.8s;
-}
-
-.fade.show{
-    opacity:1;
-    transform:translateY(0);
-}
-
-/* ===== 按钮 ===== */
 .btn{
-    display:inline-block;
     margin-top:20px;
-    padding:12px 30px;
+    display:inline-block;
+    padding:12px 28px;
     background:white;
     color:black;
     border-radius:30px;
 }
 
-/* ===== 照片墙 ===== */
+/* 滚动动画 */
+.fade{
+    opacity:0;
+    transform:translateY(50px);
+    transition:0.8s;
+}
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* 照片墙 */
 .gallery{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -108,23 +112,6 @@ canvas{
     border-radius:12px;
 }
 
-/* ===== 音乐 ===== */
-.music-box{
-    margin-top:40px;
-}
-
-/* ===== 鼠标 ===== */
-.cursor{
-    width:40px;
-    height:40px;
-    border:1px solid #00ffd5;
-    border-radius:50%;
-    position:fixed;
-    pointer-events:none;
-    transform:translate(-50%,-50%);
-    z-index:999;
-}
-
 /* 手机 */
 @media(max-width:768px){
     .title{font-size:50px;}
@@ -135,19 +122,9 @@ canvas{
 
 <body>
 
-<canvas id="bg"></canvas>
+<!-- 背景 -->
 
-<!-- 背景滚动字体 -->
-
-<div class="bg-scroll">
-<div class="bg-track">
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-</div>
-</div>
+<div class="bg" id="bg"></div>
 
 <!-- 首页 -->
 
@@ -175,65 +152,49 @@ canvas{
 <div class="section">
 <h2 class="title fade">音乐</h2>
 
-<div class="music-box fade">
-<audio controls loop>
+<audio controls loop class="fade">
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 </div>
-</div>
-
-<div class="cursor"></div>
 
 <script>
-// 鼠标
-const cursor=document.querySelector(".cursor");
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
-});
+// ===== 生成多行背景文字 =====
+const bg=document.getElementById("bg");
 
-// 滚动动画
+const fonts=["f1","f2","f3","f4"];
+
+for(let i=0;i<20;i++){   // 行数（可以改更多）
+    let row=document.createElement("div");
+    row.className="row";
+    row.style.top=(i*5)+"%";
+
+    for(let j=0;j<20;j++){
+        let span=document.createElement("span");
+        span.innerText="DRIZZIE";
+
+        // 随机字体
+        span.classList.add(fonts[Math.floor(Math.random()*fonts.length)]);
+
+        // 随机大小
+        span.style.fontSize=(40+Math.random()*80)+"px";
+
+        row.appendChild(span);
+    }
+
+    bg.appendChild(row);
+}
+
+// ===== 滚动动画 =====
 const fades=document.querySelectorAll(".fade");
+
 window.addEventListener("scroll",()=>{
-let h=window.innerHeight*0.85;
-fades.forEach(el=>{
-if(el.getBoundingClientRect().top<h){
-el.classList.add("show");
-}
+    let h=window.innerHeight*0.85;
+    fades.forEach(el=>{
+        if(el.getBoundingClientRect().top<h){
+            el.classList.add("show");
+        }
+    });
 });
-});
-
-// 粒子
-const canvas=document.getElementById("bg");
-const ctx=canvas.getContext("2d");
-
-function resize(){
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-}
-resize();
-window.onresize=resize;
-
-let p=[];
-for(let i=0;i<60;i++){
-p.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:Math.random()-0.5,vy:Math.random()-0.5});
-}
-
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-p.forEach(o=>{
-o.x+=o.vx;
-o.y+=o.vy;
-if(o.x<0||o.x>canvas.width)o.vx*=-1;
-if(o.y<0||o.y>canvas.height)o.vy*=-1;
-ctx.beginPath();
-ctx.arc(o.x,o.y,2,0,Math.PI*2);
-ctx.fillStyle="white";
-ctx.fill();
-});
-requestAnimationFrame(draw);
-}
-draw();
 </script>
 
 </body>

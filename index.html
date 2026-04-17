@@ -1,13 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
+    <meta charset="UTF-8">
     <title>Drizzie</title>
-</head>
-<body>
-    <h1>Drizzie</h1>
-    <p>这是我的生活网站</p>
 
-    <h2>今天</h2>
-    <p>刚刚开始做这个网站，有点酷</p>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: url('https://picsum.photos/1920/1080?blur=3') no-repeat center center/cover;
+        }
+
+        .overlay {
+            background: rgba(0,0,0,0.6);
+            height: 100vh;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 50px;
+        }
+
+        .card {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: white;
+            color: black;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="overlay">
+
+    <h1>Drizzie</h1>
+    <p>我在记录我的生活和情绪</p>
+
+    <!-- 音乐 -->
+    <div class="card">
+        <h3>🎧 最近在听</h3>
+        <p>Drake - Passionfruit</p>
+        <button onclick="playMusic()">播放音乐</button>
+        <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    </div>
+
+    <!-- 照片 -->
+    <div class="card">
+        <h3>📸 我的瞬间</h3>
+        <img src="https://picsum.photos/300/200" />
+    </div>
+
+    <!-- 情绪按钮 -->
+    <div class="card">
+        <h3>💭 今天状态</h3>
+        <p id="mood">🙂 平静</p>
+        <button onclick="changeMood()">换个心情</button>
+    </div>
+
+</div>
+
+<script>
+    function playMusic() {
+        var music = document.getElementById("music");
+        music.play();
+    }
+
+    function changeMood() {
+        var moods = ["😎 很酷", "🥲 有点累", "🔥 很有动力", "🌙 想安静一下"];
+        var random = Math.floor(Math.random() * moods.length);
+        document.getElementById("mood").innerText = moods[random];
+    }
+</script>
+
 </body>
 </html>

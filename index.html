@@ -12,13 +12,13 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-    background:#081c24;
+    background: radial-gradient(circle, #1f3b44, #000);
     color:white;
     font-family:sans-serif;
-    cursor:none;
+    overflow-x:hidden;
 }
 
-/* ===== 粒子 ===== */
+/* 粒子 */
 canvas{
     position:fixed;
     top:0;
@@ -26,66 +26,27 @@ canvas{
     z-index:0;
 }
 
-/* ===== 背景滚动字体（不重叠）===== */
-.bg-scroll{
-    position:fixed;
-    width:100%;
-    top:20%;
-    z-index:1;
-    overflow:hidden;
-    opacity:0.15;
-}
-
-.bg-track{
-    display:flex;
-    gap:100px;
-    white-space:nowrap;
-    animation:move 20s linear infinite;
-}
-
-.bg-track span{
-    font-size:120px;
-    font-family:'Orbitron';
-    color:#00ffd5;
-}
-
-@keyframes move{
-    from{transform:translateX(100%);}
-    to{transform:translateX(-100%);}
-}
-
-/* ===== 页面结构 ===== */
+/* 页面 */
 .section{
     min-height:100vh;
-    padding:100px 8vw;
+    padding:120px 8vw;
     position:relative;
     z-index:2;
 }
 
-/* ===== 标题 ===== */
+/* 标题 */
 .title{
     font-size:80px;
     font-family:'Monoton';
-    margin-bottom:20px;
 }
 
+/* 副标题 */
 .sub{
+    margin-top:10px;
     opacity:0.8;
 }
 
-/* ===== 滚动动画 ===== */
-.fade{
-    opacity:0;
-    transform:translateY(50px);
-    transition:0.8s;
-}
-
-.fade.show{
-    opacity:1;
-    transform:translateY(0);
-}
-
-/* ===== 按钮 ===== */
+/* 按钮 */
 .btn{
     display:inline-block;
     margin-top:20px;
@@ -93,9 +54,21 @@ canvas{
     background:white;
     color:black;
     border-radius:30px;
+    text-decoration:none;
 }
 
-/* ===== 照片墙 ===== */
+/* 滚动动画 */
+.fade{
+    opacity:0;
+    transform:translateY(50px);
+    transition:0.8s;
+}
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* 照片墙 */
 .gallery{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -107,28 +80,6 @@ canvas{
     width:100%;
     border-radius:12px;
 }
-
-/* ===== 音乐 ===== */
-.music-box{
-    margin-top:40px;
-}
-
-/* ===== 鼠标 ===== */
-.cursor{
-    width:40px;
-    height:40px;
-    border:1px solid #00ffd5;
-    border-radius:50%;
-    position:fixed;
-    pointer-events:none;
-    transform:translate(-50%,-50%);
-    z-index:999;
-}
-
-/* 手机 */
-@media(max-width:768px){
-    .title{font-size:50px;}
-}
 </style>
 
 </head>
@@ -137,29 +88,21 @@ canvas{
 
 <canvas id="bg"></canvas>
 
-<!-- 背景滚动字体 -->
-
-<div class="bg-scroll">
-<div class="bg-track">
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-<span>DRIZZIE</span>
-</div>
-</div>
-
 <!-- 首页 -->
 
 <div class="section">
 <h1 class="title fade">Drizzie</h1>
 <p class="sub fade">记录生活 / 情绪 / 音乐</p>
-<div class="btn fade">进入我的世界</div>
+
+<!-- 修复后的按钮 -->
+
+<a href="#life" class="btn fade">进入我的世界</a>
+
 </div>
 
 <!-- 生活 -->
 
-<div class="section">
+<div class="section" id="life">
 <h2 class="title fade">生活</h2>
 
 <div class="gallery fade">
@@ -175,35 +118,24 @@ canvas{
 <div class="section">
 <h2 class="title fade">音乐</h2>
 
-<div class="music-box fade">
-<audio controls loop>
+<audio controls loop class="fade">
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 </div>
-</div>
-
-<div class="cursor"></div>
 
 <script>
-// 鼠标
-const cursor=document.querySelector(".cursor");
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
-});
-
-// 滚动动画
+// ===== 滚动动画 =====
 const fades=document.querySelectorAll(".fade");
 window.addEventListener("scroll",()=>{
-let h=window.innerHeight*0.85;
-fades.forEach(el=>{
-if(el.getBoundingClientRect().top<h){
-el.classList.add("show");
-}
-});
+    let h=window.innerHeight*0.85;
+    fades.forEach(el=>{
+        if(el.getBoundingClientRect().top<h){
+            el.classList.add("show");
+        }
+    });
 });
 
-// 粒子
+// ===== 粒子背景 =====
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 
@@ -228,7 +160,7 @@ if(o.x<0||o.x>canvas.width)o.vx*=-1;
 if(o.y<0||o.y>canvas.height)o.vy*=-1;
 ctx.beginPath();
 ctx.arc(o.x,o.y,2,0,Math.PI*2);
-ctx.fillStyle="white";
+ctx.fillStyle="rgba(255,255,255,0.6)";
 ctx.fill();
 });
 requestAnimationFrame(draw);

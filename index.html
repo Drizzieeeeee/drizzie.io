@@ -86,14 +86,15 @@ body::after {
     transform: scale(1.2);
 }
 
-/* 字体 */
-.n2 { font-family: 'Pacifico'; color: #00ffd5; }
-.n3 { font-family: 'Bebas Neue'; color: #ffd700; letter-spacing: 4px; }
-.n4 { font-family: 'Orbitron'; color: #00f0ff; text-shadow: 0 0 15px #00f0ff; }
-.n5 {
+/* 不同样式的Drizzie字体 */
+.d1 { font-family: 'Pacifico'; color: #00ffd5; }
+.d2 { font-family: 'Bebas Neue'; color: #ffd700; letter-spacing: 4px; }
+.d3 { font-family: 'Orbitron'; color: #00f0ff; text-shadow: 0 0 15px #00f0ff; }
+.d4 {
     background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, purple);
     -webkit-background-clip: text;
     color: transparent;
+    font-family: 'Monoton';
 }
 
 @keyframes scroll {
@@ -101,16 +102,21 @@ body::after {
     100% { transform: translateX(-25%); }
 }
 
-/* 文案 */
-.desc {
+/* 个人简介 */
+.profile {
     margin-top: 20px;
     font-size: 18px;
     opacity: 0.8;
+    max-width: 800px;
+    line-height: 1.6;
 }
 
-/* 按钮 */
-.btn {
+/* 按钮区域 */
+.btn-group {
     margin-top: 25px;
+}
+
+.btn {
     display: inline-block;
     padding: 12px 28px;
     background: white;
@@ -118,6 +124,8 @@ body::after {
     border-radius: 25px;
     text-decoration: none;
     transition: 0.3s;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .btn:hover {
@@ -125,14 +133,24 @@ body::after {
     box-shadow: 0 0 20px rgba(255,255,255,0.3);
 }
 
-/* ===== 分区 ===== */
+.btn-subtitle {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #00f0ff;
+    opacity: 0.8;
+}
+
+/* ===== 分区通用样式 ===== */
 .section {
     padding: 100px 5vw;
 }
 
-.title {
+.section-title {
     font-size: 50px;
     margin-bottom: 30px;
+    color: #00ffd5;
+    text-shadow: 0 0 10px rgba(0, 255, 213, 0.5);
 }
 
 /* 滚动渐入 */
@@ -167,61 +185,6 @@ body::after {
     box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
 }
 
-/* 自定义音乐播放器 */
-.custom-audio-player {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(255,255,255,0.05);
-    padding: 12px 20px;
-    border-radius: 30px;
-    width: fit-content;
-    border: 1px solid rgba(0, 240, 255, 0.3);
-}
-
-.play-btn {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-}
-
-.play-btn:hover {
-    background: rgba(0, 240, 255, 0.2);
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-}
-
-.progress-bar {
-    width: 300px;
-    height: 4px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 2px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.progress {
-    height: 100%;
-    background: #00f0ff;
-    box-shadow: 0 0 10px #00f0ff;
-    width: 0%;
-    transition: width 0.1s linear;
-}
-
-.time {
-    font-size: 14px;
-    opacity: 0.8;
-    min-width: 100px;
-}
-
 /* 回到顶部 */
 .back-to-top {
     position: fixed;
@@ -252,16 +215,13 @@ body::after {
     transform: translateY(-5px);
 }
 
-/* 手机适配 - 完整补全 */
+/* 手机适配 */
 @media (max-width: 768px) {
     .track span {
         font-size: 50px;
     }
-    .title {
+    .section-title {
         font-size: 32px;
-    }
-    .progress-bar {
-        width: 180px;
     }
     .hero, .section {
         padding: 60px 5vw;
@@ -276,54 +236,59 @@ body::after {
 
 <!-- 主页面 -->
 <div class="hero">
+    <!-- 只展示不同样式的Drizzie滚动 -->
     <div class="name-marquee">
         <div class="track">
-            <span class="n2">Drizzie</span>
-            <span class="n3">潮流</span>
-            <span class="n4">艺术</span>
-            <span class="n5">生活</span>
-            <span class="n2">Drizzie</span>
-            <span class="n3">潮流</span>
-            <span class="n4">艺术</span>
-            <span class="n5">生活</span>
+            <span class="d1">Drizzie</span>
+            <span class="d2">Drizzie</span>
+            <span class="d3">Drizzie</span>
+            <span class="d4">Drizzie</span>
+            <span class="d1">Drizzie</span>
+            <span class="d2">Drizzie</span>
+            <span class="d3">Drizzie</span>
+            <span class="d4">Drizzie</span>
         </div>
     </div>
 
-    <div class="desc fade-in">
-        专注于潮流文化与视觉艺术，打造独一无二的个性风格<br>
-        用创意诠释态度，用设计定义生活
+    <!-- 个人简介 -->
+    <div class="profile fade-in">
+        大家好，我是Drizzie。<br>
+        热爱视觉艺术、潮流文化与创意设计，始终坚持用独特的视角诠释生活中的美好。<br>
+        这个宇宙里，有我的创作、我的思考，还有我对世界的理解。<br>
+        欢迎走进我的专属空间，一起探索无限可能。
     </div>
 
-    <a href="#gallery" class="btn fade-in">探索作品</a>
-
-    <!-- 音乐播放器 -->
-    <div class="custom-audio-player fade-in" style="margin-top: 30px;">
-        <button class="play-btn" id="playBtn">▶</button>
-        <div class="progress-bar" id="progressBar">
-            <div class="progress" id="progress"></div>
-        </div>
-        <div class="time" id="time">00:00 / 00:00</div>
+    <!-- 按钮区域（含英文副标题） -->
+    <div class="btn-group fade-in">
+        <a href="#module1" class="btn">探索Drizzie的宇宙</a>
+        <span class="btn-subtitle">Explore Drizzie's Universe</span>
     </div>
 </div>
 
-<!-- 照片墙区域 -->
-<div id="gallery" class="section">
-    <h2 class="title fade-in">作品展示</h2>
+<!-- 模块一 -->
+<div id="module1" class="section">
+    <h2 class="section-title fade-in">模块一</h2>
     <div class="gallery fade-in">
-        <img src="https://picsum.photos/400/600?random=1" alt="作品">
-        <img src="https://picsum.photos/400/600?random=2" alt="作品">
-        <img src="https://picsum.photos/400/600?random=3" alt="作品">
-        <img src="https://picsum.photos/400/600?random=4" alt="作品">
-        <img src="https://picsum.photos/400/600?random=5" alt="作品">
-        <img src="https://picsum.photos/400/600?random=6" alt="作品">
+        <img src="https://picsum.photos/400/600?random=1" alt="模块一作品">
+        <img src="https://picsum.photos/400/600?random=2" alt="模块一作品">
+        <img src="https://picsum.photos/400/600?random=3" alt="模块一作品">
+        <img src="https://picsum.photos/400/600?random=4" alt="模块一作品">
+    </div>
+</div>
+
+<!-- 模块二 -->
+<div id="module2" class="section">
+    <h2 class="section-title fade-in">模块二</h2>
+    <div class="gallery fade-in">
+        <img src="https://picsum.photos/400/600?random=5" alt="模块二作品">
+        <img src="https://picsum.photos/400/600?random=6" alt="模块二作品">
+        <img src="https://picsum.photos/400/600?random=7" alt="模块二作品">
+        <img src="https://picsum.photos/400/600?random=8" alt="模块二作品">
     </div>
 </div>
 
 <!-- 回到顶部按钮 -->
 <button class="back-to-top" id="backToTop">↑</button>
-
-<!-- 音频元素（隐藏） -->
-<audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
 <script>
 // 1. 滚动淡入效果
@@ -352,50 +317,6 @@ window.addEventListener('load', checkFade);
 backToTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
-// 3. 自定义音乐播放器
-const audio = document.getElementById('audio');
-const playBtn = document.getElementById('playBtn');
-const progressBar = document.getElementById('progressBar');
-const progress = document.getElementById('progress');
-const timeDisplay = document.getElementById('time');
-
-// 播放/暂停
-playBtn.addEventListener('click', () => {
-    if (audio.paused) {
-        audio.play();
-        playBtn.textContent = '⏸';
-    } else {
-        audio.pause();
-        playBtn.textContent = '▶';
-    }
-});
-
-// 更新进度条和时间
-audio.addEventListener('timeupdate', () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progress.style.width = percent + '%';
-
-    // 格式化时间
-    const current = formatTime(audio.currentTime);
-    const total = formatTime(audio.duration);
-    timeDisplay.textContent = `${current} / ${total}`;
-});
-
-// 点击进度条跳转
-progressBar.addEventListener('click', (e) => {
-    const width = progressBar.clientWidth;
-    const clickX = e.offsetX;
-    audio.currentTime = (clickX / width) * audio.duration;
-});
-
-// 时间格式化
-function formatTime(seconds) {
-    if (isNaN(seconds)) return '00:00';
-    const min = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
-    return `${min}:${sec}`;
-}
 </script>
 
 </body>
